@@ -1,27 +1,42 @@
 class CfgBuilder:
+    fnum = 0
+    fnames = list()
+    lines = list()
+
     def __init__(self):
-        self.lines = list()
+        return
 
     def appendLine(self, line):
         self.lines.append(line)
 
-    def build(self):
-        self.fnum = 0 # number of files
 
-        f = open("gen{0}".format(self.fnum), "w")
+    def build(self):
+        def filename():
+            fname = "gen{0}.cfg".format(self.fnum)
+            self.fnames.append(fname)
+            return fname
+
+        f = open(filename(), "w")
 
         lc = 0 # line count
         for line in self.lines:
             lc += 1 # increment lines by 1
 
-            # if 30 lines were read, open new file for writing.
+            # if 30 lines were read, open new file for writing
             if (lc%30 == 0):
                 f.close()
                 self.fnum += 1
-                f = open("gen{0}".format(self.fnum), "w")
+                f = open(filename(), "w")
 
             # write line to file
             f.write(line)
+
+        wait = 0
+        f = open("exec.cfg", "w")
+        for name in self.fnames:
+            f.write("wait {0}; exec {1}\n".format(wait, name))
+            wait += 200
+        f.close()
 
 class Entity:
     def __init__(self, cfgfile, name, tname, model = ""):
