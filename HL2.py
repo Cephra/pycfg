@@ -1,3 +1,5 @@
+import os.path
+
 class CfgBuilder:
     fnum = 0
     fnames = list()
@@ -12,9 +14,12 @@ class CfgBuilder:
 
     def build(self):
         def filename():
-            fname = "gen{0}.cfg".format(self.fnum)
+            fname = "script/gen{0}.cfg".format(self.fnum)
             self.fnames.append(fname)
             return fname
+
+        if not os.path.exists("script"):
+            os.makedirs("script")
 
         f = open(filename(), "w")
 
@@ -36,6 +41,7 @@ class CfgBuilder:
         for name in self.fnames:
             f.write("wait {0}; exec {1}\n".format(wait, name))
             wait += 200
+        f.write("wait {0};echo done!\n".format(wait))
         f.close()
 
 class Entity:
