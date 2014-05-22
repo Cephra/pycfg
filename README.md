@@ -16,14 +16,23 @@ This ain't a lot of code, true. But what if you want to create 10 sparks in a ci
 
 ```
 import HL2
+import math
 
 cfg = HL2.CfgBuilder("manysparks")
 
-for x in range(10):
+for x in range(0,36,10):
     ent = HL2.Entity(cfg,
             "env_spark",
             "spark{0}".format(x))
     ent.create()
+
+    rads = math.radians(x)
+    coords = "{0} {1} 0".format(
+                math.cos(rads),
+                math.sin(rads)
+            )
+    ent.setKeyvalue("origin", )
+
     ent.fireInput("startspark")
 
 cfg.build()
