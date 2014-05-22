@@ -12,7 +12,7 @@ ent_create env_spark targetname sparky
 ent_fire sparky startspark
 ```
 
-This ain't a lot of code, true. But what if you want to create sparks aligned in a circle? Yes. Correct. Way too many lines. Now this is where <b>pycfg</b> comes in hand. Instead of having to write all those lines, you can take advantage of for loops in python. Like so:
+This ain't a lot of code, true. But what if you want to create sparks aligned in a circle? Yes. Correct. Way too many lines. Now this is where <b>pycfg</b> comes in handy. Instead of having to write all those lines, you can take advantage of for loops in python. Like so:
 
 ```
 import HL2
