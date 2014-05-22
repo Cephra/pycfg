@@ -31,7 +31,7 @@ for x in range(0,36,10):
                 math.cos(rads),
                 math.sin(rads)
             )
-    ent.setKeyvalue("origin", )
+    ent.setKeyvalue("origin", coords)
 
     ent.fireInput("startspark")
 
