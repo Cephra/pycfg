@@ -1,25 +1,29 @@
 import os.path
+import shutil
 
 class CfgBuilder:
     fnum = 0
     fnames = list()
     lines = list()
 
-    def __init__(self):
+    def __init__(self, name):
+        self.name = name
         return
 
     def appendLine(self, line):
         self.lines.append(line)
 
-
     def build(self):
         def filename():
-            fname = "script/gen{0}.cfg".format(self.fnum)
+            fname = "{0}/gen{1}.cfg".format(self.name, self.fnum)
             self.fnames.append(fname)
             return fname
 
-        if not os.path.exists("script"):
-            os.makedirs("script")
+        if not os.path.exists(self.name):
+            os.makedirs(self.name)
+        else:
+            shutil.rmtree("{0}/".format(self.name), True)
+            os.makedirs(self.name)
 
         f = open(filename(), "w")
 
