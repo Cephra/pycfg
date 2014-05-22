@@ -1,6 +1,6 @@
 import HL2
 
-cfg = HL2.CfgBuilder()
+cfg = HL2.CfgBuilder("testscript")
 
 ent = HL2.Entity(cfg,
 "prop_dynamic_override",
