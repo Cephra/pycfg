@@ -1,7 +1,7 @@
 pycfg - A script generator for HL2DM
 =====
 
-This tools is designed to lower the amount of work you have to do for console scripts in HL2DM.
+This tool is designed to lower the amount of work you have to do for console scripts in HL2DM.
 
 Now one might say: "What is this all about!?!"
 
