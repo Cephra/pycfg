@@ -1,22 +1,25 @@
 import HL2
 import math
 
-cfg = HL2.CfgBuilder("manysparks")
+cfg = HL2.CfgBuilder("test")
 
-for x in range(0,36,1):
-    ent = HL2.Entity(cfg,
-            "env_spark",
-            "spark{0}".format(x))
-    ent.create()
+for i in range(0,10):
+    for x in range(0,36):
+        prop = HL2.Prop(cfg,
+                "dynamic",
+                "preep{0}{1}".format(x,i),
+                "models/roller.mdl")
 
-    rad = 100
-    rads = math.radians(x*10)
-    coords = "{0} {1} 0".format(
-                math.cos(rads)*rad,
-                math.sin(rads)*rad
-            )
-    ent.setKeyvalue("origin", coords)
+        prop.create()
 
-    ent.fireInput("startspark")
+
+        rads = math.radians(x*10)
+        prop.setKeyvalue("origin", "{0} {1} {2}".format(
+            i*20,
+            math.cos(rads)*100,
+            200+math.sin(rads)*100))
+        prop.setKeyvalue("rendercolor", "{0} {0} {0}".format(
+            255*(i/10)))
+
 
 cfg.build()
