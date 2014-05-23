@@ -1,6 +1,11 @@
 import os.path
 import shutil
 
+class Vector:
+    def __init__(self, x=0, y=None, z=None):
+        return
+
+
 class CfgBuilder:
     fnum = 0
     fnames = list()
@@ -48,7 +53,7 @@ class CfgBuilder:
         f.close()
 
 class Entity:
-    def __init__(self, cfg, entname, name, prekeyvals = dict()):
+    def __init__(self, cfg, entname, name, prekeyvals=dict()):
         self.cfg = cfg
         self.entname = entname
         self.name = name
@@ -68,8 +73,10 @@ class Entity:
                 line += " {0} \"{1}\"".format(key, value)
         self.out(line)
 
-    def fireInput(self, iput, args = ""):
-        line = "ent_fire {0} {1} \"{2}\"".format(self.name,iput,args)
+    def fireInput(self, iput, args=None):
+        line = "ent_fire {0} {1}".format(self.name,iput)
+        if args != None:
+            line += " \"{0}\"".format(args)
         self.out(line);
 
     def setKeyvalue(self, key, value):
@@ -78,7 +85,7 @@ class Entity:
     def buildOPstring(self, otarg, action, args, delay, refiretime):
         return "{0},{1},{2},{3},{4}".format(otarg, action, args, delay, refiretime)
 
-    def addOutput(self, output, otarg, action, args = "", delay = "0.0", refiretime = "-1"):
+    def addOutput(self, output, otarg, action, args="", delay="0.0", refiretime="-1"):
         s = self.buildOPstring(otarg, action, args, delay, refiretime)
         self.setKeyvalue(output, s)
 

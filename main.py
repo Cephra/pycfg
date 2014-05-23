@@ -21,5 +21,4 @@ for i in range(0,10):
         prop.setKeyvalue("rendercolor", "{0} {0} {0}".format(
             255*(i/10)))
 
-
 cfg.build()
