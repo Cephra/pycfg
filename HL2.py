@@ -93,7 +93,11 @@ class Entity:
 
 
     def create(self):
-        line = "ent_create {0} targetname \"{1}\" classname \"{2}\"".format(self.entname, self.name, self.cfg.name)
+        cname = self.name
+        if (self.cfg):
+            cname = self.cfg.name
+
+        line = "ent_create {0} targetname \"{1}\" classname \"{2}\"".format(self.entname, self.name, cname)
         if (len(self.prekeyvals) > 0):
             for key, value in self.prekeyvals.items():
                 line += " {0} \"{1}\"".format(key, value)
@@ -114,6 +118,16 @@ class Entity:
     def addOutput(self, output, otarg, action, args="", delay="0.0", refiretime="-1"):
         s = self.buildOPstring(otarg, action, args, delay, refiretime)
         self.setKeyvalue(output, s)
+
+    def parentTo(self, targ=None):
+        parentstr = ""
+
+        if type(targ) is str:
+            parentstr = targ
+        elif type(targ) is Entity:
+            parentstr = targ.name
+
+        self.fireInput("setparent", parentstr)
 
 
 class Prop(Entity):

@@ -20,4 +20,8 @@ for i in range(0,10):
         prop.setKeyvalue("rendercolor", "{0} {0} {0}".format(
             255*(i/10)))
 
+ent = HL2.Entity(0, "env_spark", "asd")
+ent.create()
+ent.parentTo("bullshit")
+
 cfg.build()
