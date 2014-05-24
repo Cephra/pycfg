@@ -1,19 +1,9 @@
 import os.path
 import shutil
 
-class Vec:
+class Vector:
     def __init__(self, x=0, y=None, z=None):
-        self.x = x
-        if (y and z) is None:
-            self.y = x
-            self.z = x
-        else:
-            self.y = y
-            self.z = z
         return
-
-    def str(self):
-        return "{0} {1} {2}".format(self.x, self.y, self.z)
 
 
 class CfgBuilder:
@@ -21,8 +11,9 @@ class CfgBuilder:
     fnames = list()
     lines = list()
 
-    def __init__(self, name):
+    def __init__(self, name, wait=200):
         self.name = name
+        self.wait = wait
         return
 
     def appendLine(self, line):
@@ -56,10 +47,13 @@ class CfgBuilder:
 
         wait = 0
         f = open("exec_{0}.cfg".format(self.name), "w")
+        f.write("alias {0} \"ent_fire {0} kill;setinfo {0} off\"\n".format(self.name))
+        f.write("{0}\n\n".format(self.name))
         for name in self.fnames:
             f.write("wait {0}; exec {1}\n".format(wait, name))
-            wait += 200
-        f.write("wait {0};echo done!\n".format(wait))
+            wait += self.wait
+        f.write("\nwait {0};setinfo {1} on\n".format(wait,self.name))
+        f.write("wait {0};echo {1}\n".format(wait,self.name))
         f.close()
 
 class Entity:
@@ -77,7 +71,7 @@ class Entity:
 
 
     def create(self):
-        line = "ent_create {0} targetname \"{1}\" classname \"{2}\"".format(self.entname, self.name, self.cfg.name)
+        line = "ent_create {0} classname \"{1}\" targetname \"{2}\"".format(self.entname, self.cfg.name, self.name)
         if (len(self.prekeyvals) > 0):
             for key, value in self.prekeyvals.items():
                 line += " {0} \"{1}\"".format(key, value)
