@@ -29,6 +29,7 @@ class Vec:
             self.y = ((self.y - origin.y) * math.cos(angle)) + ((origin.x - self.x) * math.sin(angle)) + origin.y
         return
 
+
 class CfgBuilder:
     fnum = 0
     fnames = list()
