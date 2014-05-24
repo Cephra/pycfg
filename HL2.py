@@ -56,7 +56,7 @@ class CfgBuilder:
             f.write(line)
 
         wait = 0
-        f = open("exec_{0}.cfg".format(self.name), "w")
+        f = open("pycfg_{0}.cfg".format(self.name), "w")
         for name in self.fnames:
             f.write("wait {0}; exec {1}\n".format(wait, name))
             wait += self.wait
