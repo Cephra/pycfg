@@ -15,6 +15,22 @@ class Vec:
     def str(self):
         return "{0} {1} {2}".format(self.x, self.y, self.z)
 
+<<<<<<< Updated upstream
+=======
+    #TODO: This introduces rounding errors faster than expected. Find and fix.
+    def rotate(self, origin, axis, angle):
+        angle = math.radians(angle)
+        if (axis == 'x'):
+            self.y = ((self.y - origin.y) * math.cos(angle)) - ((origin.z - self.z) * math.sin(angle)) + origin.y
+            self.z = ((self.z - origin.z) * math.cos(angle)) + ((origin.y - self.y) * math.sin(angle)) + origin.z
+        elif (axis == 'y'):
+            self.x = ((self.x - origin.x) * math.cos(angle)) - ((origin.z - self.z) * math.sin(angle)) + origin.x
+            self.z = ((self.z - origin.z) * math.cos(angle)) + ((origin.x - self.x) * math.sin(angle)) + origin.z
+        elif (axis == 'z'):
+            self.x = ((self.x - origin.x) * math.cos(angle)) - ((origin.y - self.y) * math.sin(angle)) + origin.x
+            self.y = ((self.y - origin.y) * math.cos(angle)) + ((origin.x - self.x) * math.sin(angle)) + origin.y
+        return
+>>>>>>> Stashed changes
 
 class CfgBuilder:
     fnum = 0
@@ -60,7 +76,11 @@ class CfgBuilder:
         for name in self.fnames:
             f.write("wait {0}; exec {1}\n".format(wait, name))
             wait += self.wait
+<<<<<<< Updated upstream
         f.write("wait {0};echo done!\n".format(wait))
+=======
+        f.write("wait {0};echo {1}\n".format(wait,self.name))
+>>>>>>> Stashed changes
         f.close()
 
 
