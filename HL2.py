@@ -1,9 +1,19 @@
 import os.path
 import shutil
 
-class Vector:
+class Vec:
     def __init__(self, x=0, y=None, z=None):
+        self.x = x
+        if (y and z) is None:
+            self.y = x
+            self.z = x
+        else:
+            self.y = y
+            self.z = z
         return
+
+    def str(self):
+        return "{0} {1} {2}".format(self.x, self.y, self.z)
 
 
 class CfgBuilder:

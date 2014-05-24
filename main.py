@@ -12,7 +12,6 @@ for i in range(0,10):
 
         prop.create()
 
-
         rads = math.radians(x*10)
         prop.setKeyvalue("origin", "{0} {1} {2}".format(
             i*20,
