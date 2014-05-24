@@ -77,7 +77,7 @@ class Entity:
 
 
     def create(self):
-        line = "ent_create {0} classname \"{1}\" targetname \"{1}\"".format(self.entname, self.name)
+        line = "ent_create {0} targetname \"{1}\" classname \"{2}\"".format(self.entname, self.name, self.cfg.name)
         if (len(self.prekeyvals) > 0):
             for key, value in self.prekeyvals.items():
                 line += " {0} \"{1}\"".format(key, value)
