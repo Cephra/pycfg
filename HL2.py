@@ -63,6 +63,7 @@ class CfgBuilder:
         f.write("wait {0};echo done!\n".format(wait))
         f.close()
 
+
 class Entity:
     def __init__(self, cfg, entname, name, prekeyvals=dict()):
         self.cfg = cfg
@@ -99,6 +100,7 @@ class Entity:
     def addOutput(self, output, otarg, action, args="", delay="0.0", refiretime="-1"):
         s = self.buildOPstring(otarg, action, args, delay, refiretime)
         self.setKeyvalue(output, s)
+
 
 class Prop(Entity):
     def __init__(self, cfg, entname, name, model):
