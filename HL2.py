@@ -1,5 +1,6 @@
 import os.path
 import shutil
+import math
 
 class Vec:
     def __init__(self, x=0, y=None, z=None):
