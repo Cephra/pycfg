@@ -4,17 +4,53 @@ import math
 
 class Vec:
     def __init__(self, x=0, y=None, z=None):
-        self.x = x
         if (y and z) is None:
-            self.y = x
-            self.z = x
+            self.x, self.y, self.z, = (x, x, x)
         else:
-            self.y = y
-            self.z = z
-        return
+            self.x, self.y, self.z, = (x, y, z)
 
     def str(self):
         return "{0} {1} {2}".format(self.x, self.y, self.z)
+
+    def add(self, val):
+        if type(val) is Vec:
+            self.x += val.x
+            self.y += val.y
+            self.z += val.z
+        else:
+            self.x += val
+            self.y += val
+            self.z += val
+
+    def sub(self, val):
+        if type(val) is Vec:
+            self.x -= val.x
+            self.y -= val.y
+            self.z -= val.z
+        else:
+            self.x -= val
+            self.y -= val
+            self.z -= val
+
+    def mul(self, val):
+        if type(val) is Vec:
+            self.x *= val.x
+            self.y *= val.y
+            self.z *= val.z
+        else:
+            self.x *= val
+            self.y *= val
+            self.z *= val
+
+    def div(self, val):
+        if type(val) is Vec:
+            self.x /= val.x
+            self.y /= val.y
+            self.z /= val.z
+        else:
+            self.x /= val
+            self.y /= val
+            self.z /= val
 
     def rotate(self, origin, axis, angle):
         angle = math.radians(angle)
@@ -45,12 +81,11 @@ class CfgBuilder:
     def __init__(self, name, wait=200):
         self.name = name
         self.wait = wait
-        return
 
     def appendLine(self, line):
         self.lines.append(line)
 
-    def addCmd(self, cmd):
+    def rawCmd(self, cmd):
         self.appendLine(cmd)
 
     def build(self):
@@ -146,6 +181,8 @@ class Prop(Entity):
 
 class Trigger(Entity):
     def __init__(self, cfg, triggertype, name, mins, maxs=None):
+        if (maxs == None):
+            maxs=mins
         Entity.__init__(self, cfg, "trigger_{0}".format(triggertype), name, {
             "solid": "3",
             "mins": mins,
