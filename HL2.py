@@ -13,44 +13,24 @@ class Vec:
         return "{0} {1} {2}".format(self.x, self.y, self.z)
 
     def add(self, val):
-        if type(val) is Vec:
-            self.x += val.x
-            self.y += val.y
-            self.z += val.z
-        else:
-            self.x += val
-            self.y += val
-            self.z += val
+        self.x += val.x
+        self.y += val.y
+        self.z += val.z
 
     def sub(self, val):
-        if type(val) is Vec:
-            self.x -= val.x
-            self.y -= val.y
-            self.z -= val.z
-        else:
-            self.x -= val
-            self.y -= val
-            self.z -= val
+        self.x -= val.x
+        self.y -= val.y
+        self.z -= val.z
 
     def mul(self, val):
-        if type(val) is Vec:
-            self.x *= val.x
-            self.y *= val.y
-            self.z *= val.z
-        else:
-            self.x *= val
-            self.y *= val
-            self.z *= val
+        self.x *= val.x
+        self.y *= val.y
+        self.z *= val.z
 
     def div(self, val):
-        if type(val) is Vec:
-            self.x /= val.x
-            self.y /= val.y
-            self.z /= val.z
-        else:
-            self.x /= val
-            self.y /= val
-            self.z /= val
+        self.x /= val.x
+        self.y /= val.y
+        self.z /= val.z
 
     def rotate(self, origin, axis, angle):
         angle = math.radians(angle)
