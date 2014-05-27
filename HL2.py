@@ -30,7 +30,7 @@ class Vec:
             x = ((self.x - origin.x) * math.cos(angle)) - ((origin.y - self.y) * math.sin(angle)) + origin.x
             y = ((self.y - origin.y) * math.cos(angle)) + ((origin.x - self.x) * math.sin(angle)) + origin.y
             z = self.z
-        
+
         self.x = x
         self.y = y
         self.z = z
@@ -49,6 +49,9 @@ class CfgBuilder:
 
     def appendLine(self, line):
         self.lines.append(line)
+
+    def addCmd(self, cmd):
+        self.appendLine(cmd)
 
     def build(self):
         def filename():
@@ -127,18 +130,24 @@ class Entity:
         self.setKeyvalue(output, s)
 
     def parentTo(self, targ=None):
-        parentstr = ""
-
         if type(targ) is str:
-            parentstr = targ
+            targ = targ
         elif type(targ) is Entity:
-            parentstr = targ.name
+            targ = targ.name
 
-        self.fireInput("setparent", parentstr)
+        self.fireInput("setparent", targ)
 
 
 class Prop(Entity):
-    def __init__(self, cfg, entname, name, model):
-        Entity.__init__(self, cfg, "prop_{0}".format(entname), name,{
+    def __init__(self, cfg, proptype, name, model):
+        Entity.__init__(self, cfg, "prop_{0}".format(proptype), name,{
             "model": model,
             "solid": 6})
+
+class Trigger(Entity):
+    def __init__(self, cfg, triggertype, name, mins, maxs=None):
+        Entity.__init__(self, cfg, "trigger_{0}".format(triggertype), name, {
+            "solid": "3",
+            "mins": mins,
+            "maxs": maxs})
+
