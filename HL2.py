@@ -4,7 +4,7 @@ import math
 
 class Vec:
     def __init__(self, x=0, y=None, z=None):
-        if (y and z) is None:
+        if not (y and z):
             self.x, self.y, self.z, = (x, x, x)
         else:
             self.x, self.y, self.z, = (x, y, z)
@@ -16,21 +16,25 @@ class Vec:
         self.x += val.x
         self.y += val.y
         self.z += val.z
+        return self
 
     def sub(self, val):
         self.x -= val.x
         self.y -= val.y
         self.z -= val.z
+        return self
 
     def mul(self, val):
         self.x *= val.x
         self.y *= val.y
         self.z *= val.z
+        return self
 
     def div(self, val):
         self.x /= val.x
         self.y /= val.y
         self.z /= val.z
+        return self
 
     def rotate(self, origin, axis, angle):
         angle = math.radians(angle)
@@ -50,7 +54,7 @@ class Vec:
         self.x = x
         self.y = y
         self.z = z
-        return
+        return self
 
 
 class CfgBuilder:
@@ -63,7 +67,7 @@ class CfgBuilder:
         self.wait = wait
 
     def appendLine(self, line):
-        self.lines.append(line)
+        self.lines.append(line+"\n")
 
     def rawCmd(self, cmd):
         self.appendLine(cmd)
@@ -99,23 +103,22 @@ class CfgBuilder:
         for name in self.fnames:
             f.write("wait {0}; exec {1}\n".format(wait, name))
             wait += self.wait
-        f.write("wait {0};echo done!\n".format(wait))
+        f.write("wait {0}; echo done!\n".format(wait))
         f.close()
 
 
 class Entity:
-    def __init__(self, cfg, entname, name, prekeyvals=dict()):
+    def __init__(self, cfg, entname, name, spawnkvs=dict()):
         self.cfg = cfg
         self.entname = entname
         self.name = name
-        self.prekeyvals = prekeyvals
+        self.spawnkvs = spawnkvs
 
     def out(self, line):
         if (self.cfg):
-            self.cfg.appendLine(line+"\n")
+            self.cfg.appendLine(line)
         else:
             print(line)
-
 
     def create(self):
         cname = self.name
@@ -123,8 +126,8 @@ class Entity:
             cname = self.cfg.name
 
         line = "ent_create {0} targetname \"{1}\" classname \"{2}\"".format(self.entname, self.name, cname)
-        if (len(self.prekeyvals) > 0):
-            for key, value in self.prekeyvals.items():
+        if (len(self.spawnkvs) > 0):
+            for key, value in self.spawnkvs.items():
                 line += " {0} \"{1}\"".format(key, value)
         self.out(line)
 
@@ -145,26 +148,39 @@ class Entity:
         self.setKeyvalue(output, s)
 
     def parentTo(self, targ=None):
-        if type(targ) is str:
-            targ = targ
-        elif type(targ) is Entity:
+        if issubclass(type(targ), Entity):
             targ = targ.name
 
         self.fireInput("setparent", targ)
 
 
+class Sprite(Entity):
+    def __init__(self, cfg, name, model):
+        Entity.__init(self, cfg, "env_sprite", name, {
+            "model": model});
+        return
+
+
 class Prop(Entity):
     def __init__(self, cfg, proptype, name, model):
-        Entity.__init__(self, cfg, "prop_{0}".format(proptype), name,{
+        Entity.__init__(self, cfg, "prop_{0}".format(proptype), name, {
             "model": model,
             "solid": 6})
 
-class Trigger(Entity):
-    def __init__(self, cfg, triggertype, name, mins, maxs=None):
-        if (maxs == None):
-            maxs=mins
-        Entity.__init__(self, cfg, "trigger_{0}".format(triggertype), name, {
-            "solid": "3",
-            "mins": mins,
-            "maxs": maxs})
 
+class Brush(Entity):
+    def __init__(self, cfg, entname, name, maxs, mins=None):
+        if (mins == None):
+            mins=Vec(-maxs.x,
+                    -maxs.y,
+                    -maxs.z)
+
+        Entity.__init__(self, cfg, entname, name, {
+            "solid": "2",
+            "maxs": maxs.str(),
+            "mins": mins.str()})
+
+
+class Trigger(Brush):
+    def __init__(self, cfg, triggertype, name, maxs, mins=None):
+        Brush.__init__(self, cfg, "trigger_{0}".format(triggertype), name, maxs, mins)
