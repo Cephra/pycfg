@@ -156,16 +156,14 @@ class Entity:
 
 class Sprite(Entity):
     def __init__(self, cfg, name, texture):
-        Entity.__init(self, cfg, "env_sprite", name, {
-            "model": texture});
-        return
+        Entity.__init__(self, cfg, "env_sprite", name, {
+            "model": texture})
 
 
 class Spritetrail(Entity):
     def __init__(self, cfg, name, texture):
-        Entity.__init(self, cfg, "env_spritetrail", name, {
-            "spritename": texture});
-        return
+        Entity.__init__(self, cfg, "env_spritetrail", name, {
+            "spritename": texture})
 
 
 class Prop(Entity):
