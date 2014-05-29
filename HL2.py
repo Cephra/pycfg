@@ -4,7 +4,7 @@ import math
 
 class Vec:
     def __init__(self, x=0, y=None, z=None):
-        if not (y and z):
+        if (y and z) is None:
             self.x, self.y, self.z, = (x, x, x)
         else:
             self.x, self.y, self.z, = (x, y, z)
@@ -155,9 +155,16 @@ class Entity:
 
 
 class Sprite(Entity):
-    def __init__(self, cfg, name, model):
+    def __init__(self, cfg, name, texture):
         Entity.__init(self, cfg, "env_sprite", name, {
-            "model": model});
+            "model": texture});
+        return
+
+
+class Spritetrail(Entity):
+    def __init__(self, cfg, name, texture):
+        Entity.__init(self, cfg, "env_spritetrail", name, {
+            "spritename": texture});
         return
 
 
