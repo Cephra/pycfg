@@ -143,7 +143,9 @@ class Entity:
     def buildOPstring(self, otarg, action, args, delay, refiretime):
         return "{0},{1},{2},{3},{4}".format(otarg, action, args, delay, refiretime)
 
-    def addOutput(self, output, otarg, action, args="", delay="0.0", refiretime="-1"):
+    def addOutput(self, output, otarg, action, args=None, delay="0.0", refiretime="-1"):
+        if args is None:
+            args = ""
         s = self.buildOPstring(otarg, action, args, delay, refiretime)
         self.setKeyvalue(output, s)
 
