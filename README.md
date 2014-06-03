@@ -20,19 +20,15 @@ import math
 
 cfg = HL2.CfgBuilder("manysparks")
 
+o = HL2.Vec(0,0,0)
+v = HL2.Vec(100,0,0)
+
 for x in range(0,36,1):
     ent = HL2.Entity(cfg,
             "env_spark",
             "spark{0}".format(x))
     ent.create()
-
-    rad = 100
-    rads = math.radians(x*10)
-    coords = "{0} {1} 0".format(
-                math.cos(rads)*rad,
-                math.sin(rads)*rad
-            )
-    ent.setKeyvalue("origin", coords)
+    ent.setKeyvalue("origin", v.rotate(o,"z",10))
 
     ent.fireInput("startspark")
 
