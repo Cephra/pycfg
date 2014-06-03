@@ -12,29 +12,53 @@ class Vec:
     def str(self):
         return "{0} {1} {2}".format(self.x, self.y, self.z)
 
-    def add(self, val):
-        self.x += val.x
-        self.y += val.y
-        self.z += val.z
-        return self
+    def __add__(self, other):
+        v = Vec()
+        if type(other) is Vec:
+            v.x = self.x + other.x
+            v.y = self.y + other.y
+            v.z = self.z + other.z
+        elif type(other) is int:
+            v.x = self.x + other
+            v.y = self.y + other
+            v.z = self.z + other
+        return v
 
-    def sub(self, val):
-        self.x -= val.x
-        self.y -= val.y
-        self.z -= val.z
-        return self
+    def __sub__(self, other):
+        v = Vec()
+        if type(other) is Vec:
+            v.x = self.x - other.x
+            v.y = self.y - other.y
+            v.z = self.z - other.z
+        elif type(other) is int:
+            v.x = self.x - other
+            v.y = self.y - other
+            v.z = self.z - other
+        return v
 
-    def mul(self, val):
-        self.x *= val.x
-        self.y *= val.y
-        self.z *= val.z
-        return self
+    def __mul__(self, other):
+        v = Vec()
+        if type(other) is Vec:
+            v.x = self.x * other.x
+            v.y = self.y * other.y
+            v.z = self.z * other.z
+        elif type(other) is int:
+            v.x = self.x * other
+            v.y = self.y * other
+            v.z = self.z * other
+        return v
 
-    def div(self, val):
-        self.x /= val.x
-        self.y /= val.y
-        self.z /= val.z
-        return self
+    def __div__(self, other):
+        v = Vec()
+        if type(other) is Vec:
+            v.x = self.x / other.x
+            v.y = self.y / other.y
+            v.z = self.z / other.z
+        elif type(other) is int:
+            v.x = self.x / other
+            v.y = self.y / other
+            v.z = self.z / other
+        return v
 
     def rotate(self, origin, axis, angle):
         angle = math.radians(angle)
@@ -86,14 +110,12 @@ class CfgBuilder:
 
         f = open(filename(), "w")
 
-        lc = 1
-        for line in self.lines:
+        for lc, line in enumerate(self.lines):
             # if 30 lines were read, open new file for writing
-            if (lc%30 == 0):
+            if ((lc+1)%30 == 0):
                 f.close()
                 self.fnum += 1
                 f = open(filename(), "w")
-            lc += 1
 
             # write line to file
             f.write(line)
@@ -108,6 +130,8 @@ class CfgBuilder:
 
 
 class Entity:
+    spawnflags = 0
+
     def __init__(self, cfg, entname, name, spawnkvs=dict()):
         self.cfg = cfg
         self.entname = entname
@@ -125,7 +149,7 @@ class Entity:
         if (self.cfg):
             cname = self.cfg.name
 
-        line = "ent_create {0} targetname \"{1}\" classname \"{2}\"".format(self.entname, self.name, cname)
+        line = "ent_create {0} targetname \"{1}\" classname \"{2}\" spawnflags {3}".format(self.entname, self.name, cname, self.spawnflags)
         if (len(self.spawnkvs) > 0):
             for key, value in self.spawnkvs.items():
                 line += " {0} \"{1}\"".format(key, value)
@@ -139,6 +163,10 @@ class Entity:
 
     def setKeyvalue(self, key, value):
         self.fireInput("addoutput", "{0} {1}".format(key, value))
+
+    def setSpawnflags(self, spawnflags):
+        self.spawnflags = spawnflags
+        self.setKeyvalue("spawnflags", self.spawnflags)
 
     def buildOPstring(self, otarg, action, args, delay, refiretime):
         return "{0},{1},{2},{3},{4}".format(otarg, action, args, delay, refiretime)
