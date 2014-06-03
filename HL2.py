@@ -60,6 +60,9 @@ class Vec:
             v.z = self.z / other
         return v
 
+    def __truediv__(self, other):
+        return self.__div__(other)
+
     def rotate(self, origin, axis, angle):
         angle = math.radians(angle)
         if (axis == 'x'):
