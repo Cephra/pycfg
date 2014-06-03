@@ -16,7 +16,6 @@ This ain't a lot of code, true. But what if you want to create sparks aligned in
 
 ```python
 import HL2
-import math
 
 # Create a script by the name "manysparks". 
 cfg = HL2.CfgBuilder("manysparks")
