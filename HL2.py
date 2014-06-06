@@ -83,6 +83,21 @@ class Vec:
         self.z = z
         return self
 
+    def magnitude(self):
+        mag = math.sqrt(pow(self.x,2) + pow(self.y,2) + pow(self.z,2))
+        return mag
+
+    def normalize(self):
+        nvec = Vec()
+
+        mag = self.magnitude()
+
+        nvec.x = self.x/mag
+        nvec.x = self.y/mag
+        nvec.x = self.z/mag
+
+        return nvec
+
 
 class CfgBuilder:
     fnum = 0
@@ -92,12 +107,15 @@ class CfgBuilder:
     def __init__(self, name, wait=200):
         self.name = name
         self.wait = wait
+        return
 
     def appendLine(self, line):
         self.lines.append(line+"\n")
+        return
 
     def rawCmd(self, cmd):
         self.appendLine(cmd)
+        return
 
     def build(self):
         def filename():
@@ -130,22 +148,25 @@ class CfgBuilder:
             wait += self.wait
         f.write("wait {0}; echo done!\n".format(wait))
         f.close()
+        return
 
 
 class Entity:
     spawnflags = 0
 
-    def __init__(self, cfg, entname, name, spawnkvs=dict()):
+    def __init__(self, cfg, entname, name, kvs=dict()):
         self.cfg = cfg
         self.entname = entname
         self.name = name
-        self.spawnkvs = spawnkvs
+        self.__kvs = kvs
+        return
 
     def out(self, line):
         if (self.cfg):
             self.cfg.appendLine(line)
         else:
             print(line)
+        return
 
     def create(self):
         cname = self.name
@@ -153,23 +174,27 @@ class Entity:
             cname = self.cfg.name
 
         line = "ent_create {0} targetname \"{1}\" classname \"{2}\" spawnflags {3}".format(self.entname, self.name, cname, self.spawnflags)
-        if (len(self.spawnkvs) > 0):
-            for key, value in self.spawnkvs.items():
+        if (len(self.__kvs) > 0):
+            for key, value in self.__kvs.items():
                 line += " {0} \"{1}\"".format(key, value)
         self.out(line)
+        return
 
     def fireInput(self, iput, args=None):
         line = "ent_fire {0} {1}".format(self.name,iput)
         if args != None:
             line += " \"{0}\"".format(args)
         self.out(line);
+        return
 
     def setKeyvalue(self, key, value):
         self.fireInput("addoutput", "{0} {1}".format(key, value))
+        return
 
     def setSpawnflags(self, spawnflags):
         self.spawnflags = spawnflags
         self.setKeyvalue("spawnflags", self.spawnflags)
+        return
 
     def buildOPstring(self, otarg, action, args, delay, refiretime):
         return "{0},{1},{2},{3},{4}".format(otarg, action, args, delay, refiretime)
@@ -179,35 +204,40 @@ class Entity:
             args = ""
         s = self.buildOPstring(otarg, action, args, delay, refiretime)
         self.setKeyvalue(output, s)
+        return
 
     def parentTo(self, targ=None):
         if issubclass(type(targ), Entity):
             targ = targ.name
 
         self.fireInput("setparent", targ)
+        return
 
 
 class Sprite(Entity):
-    def __init__(self, cfg, name, texture):
+    def __init__(self, cfg, name, texture, kvs=dict()):
         Entity.__init__(self, cfg, "env_sprite", name, {
             "model": texture})
+        return
 
 
 class Spritetrail(Entity):
-    def __init__(self, cfg, name, texture):
+    def __init__(self, cfg, name, texture, kvs=dict()):
         Entity.__init__(self, cfg, "env_spritetrail", name, {
             "spritename": texture})
+        return
 
 
 class Prop(Entity):
-    def __init__(self, cfg, proptype, name, model):
+    def __init__(self, cfg, proptype, name, model, kvs=dict()):
         Entity.__init__(self, cfg, "prop_{0}".format(proptype), name, {
             "model": model,
             "solid": 6})
+        return
 
 
 class Brush(Entity):
-    def __init__(self, cfg, entname, name, maxs, mins=None):
+    def __init__(self, cfg, entname, name, maxs, mins=None, kvs=dict()):
         if (mins == None):
             mins=Vec(-maxs.x,
                     -maxs.y,
@@ -217,8 +247,10 @@ class Brush(Entity):
             "solid": "2",
             "maxs": maxs.str(),
             "mins": mins.str()})
+        return
 
 
 class Trigger(Brush):
-    def __init__(self, cfg, triggertype, name, maxs, mins=None):
+    def __init__(self, cfg, triggertype, name, maxs, mins=None, kvs=dict()):
         Brush.__init__(self, cfg, "trigger_{0}".format(triggertype), name, maxs, mins)
+        return
