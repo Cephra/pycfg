@@ -1,27 +1,22 @@
 import HL2
-import math
 
-cfg = HL2.CfgBuilder("test")
+# Create a script by the name "manysparks". 
+cfg = HL2.CfgBuilder("manysparks")
 
-for i in range(0,10):
-    for x in range(0,36):
-        prop = HL2.Prop(cfg,
-                "dynamic",
-                "preep{0}{1}".format(x,i),
-                "models/roller.mdl")
+# Define the Origin and the Point we want to rotate.
+o = HL2.Vec(0,0,0)
+v = HL2.Vec(100,0,0)
 
-        prop.create()
+# Rotate by 10 degrees every 36 times => 360 degrees.
+for x in range(0,36,1):
+    ent = HL2.Entity(cfg,
+            "env_spark",
+            "spark{0}".format(x))
+    ent.create()
+    
+    ent.setKeyvalue("origin", v.rotate(o,"z",10).str())
 
-        rads = math.radians(x*10)
-        prop.setKeyvalue("origin", "{0} {1} {2}".format(
-            i*20,
-            math.cos(rads)*100,
-            200+math.sin(rads)*100))
-        prop.setKeyvalue("rendercolor", "{0} {0} {0}".format(
-            255*(i/10)))
+    ent.fireInput("startspark")
 
-ent = HL2.Entity(0, "env_spark", "asd")
-ent.create()
-ent.parentTo("bullshit")
-
+# Builds the script into the current working directory.
 cfg.build()
