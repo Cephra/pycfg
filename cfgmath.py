@@ -12,7 +12,7 @@ class Vec:
 
     def __add__(self, other):
         v = Vec()
-        if type(other) is vec:
+        if type(other) is Vec:
             v.x = self.x + other.x
             v.y = self.y + other.y
             v.z = self.z + other.z
@@ -24,7 +24,7 @@ class Vec:
 
     def __sub__(self, other):
         v = Vec()
-        if type(other) is vec:
+        if type(other) is Vec:
             v.x = self.x - other.x
             v.y = self.y - other.y
             v.z = self.z - other.z
@@ -36,7 +36,7 @@ class Vec:
 
     def __mul__(self, other):
         v = Vec()
-        if type(other) is vec:
+        if type(other) is Vec:
             v.x = self.x * other.x
             v.y = self.y * other.y
             v.z = self.z * other.z
@@ -48,7 +48,7 @@ class Vec:
 
     def __div__(self, other):
         v = Vec()
-        if type(other) is vec:
+        if type(other) is Vec:
             v.x = self.x / other.x
             v.y = self.y / other.y
             v.z = self.z / other.z
