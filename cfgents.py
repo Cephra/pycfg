@@ -31,7 +31,7 @@ class Entity:
         return
 
     def fireInput(self, iput, args=None):
-        line = "ent_fire {0} {1}".format(self.name,iput)
+        line = "ent_fire {0} {1}".format(self.name, iput)
         if args != None:
             line += " \"{0}\"".format(args)
         self.out(line);

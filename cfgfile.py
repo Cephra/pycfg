@@ -1,6 +1,5 @@
 import os.path
 import shutil
-import math
 
 class CfgBuilder:
     fnum = 0
