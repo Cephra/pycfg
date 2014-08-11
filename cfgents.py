@@ -80,7 +80,7 @@ class Spritetrail(Entity):
 
 class Prop(Entity):
     def __init__(self, cfg, proptype, name, model, kvs=dict()):
-        kvs["model"] = kvs
+        kvs["model"] = model
         if "solid" not in kvs:
             kvs["solid"] = 6
         Entity.__init__(self, cfg, "prop_{0}".format(proptype), name, kvs)
