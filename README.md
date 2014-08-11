@@ -28,7 +28,7 @@ v = cfgmath.Vec(100,0,0)
 
 # Rotate by 10 degrees every 36 times => 360 degrees.
 for x in range(0,36,1):
-    # Create a new file every 4 entities so wen don't mess up our game.
+    # Create a new file every 4 entities so we don't mess up our game.
     if ((x%4)==0):
         cfg.newFile();
 
