@@ -1,19 +1,24 @@
-import HL2
+import cfgents
+import cfgfile
+import cfgmath
 
-# Create a script by the name "manysparks". 
-cfg = HL2.CfgBuilder("manysparks")
+# Create a script by the name "manysparks".
+cfg = cfgfile.CfgBuilder("manysparks")
 
 # Define the Origin and the Point we want to rotate.
-o = HL2.Vec(0,0,0)
-v = HL2.Vec(100,0,0)
+o = cfgmath.Vec(0,0,0)
+v = cfgmath.Vec(100,0,0)
 
 # Rotate by 10 degrees every 36 times => 360 degrees.
 for x in range(0,36,1):
-    ent = HL2.Entity(cfg,
+    if ((x%4)==0):
+        cfg.newFile();
+
+    ent = cfgents.Entity(cfg,
             "env_spark",
             "spark{0}".format(x))
     ent.create()
-    
+
     ent.setKeyvalue("origin", v.rotate(o,"z",10).str())
 
     ent.fireInput("startspark")
