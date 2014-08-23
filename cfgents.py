@@ -73,21 +73,21 @@ class Entity(object):
 
     @property
     def origin(self):
-        return str(self._origin)
+        return self._origin
     @origin.setter
     def origin(self, value):
         if isinstance(value, cfgmath.Vec):
-            self.setKeyvalue("origin", str(value))
+            self.setKeyvalue("origin", value)
             self._origin = value
         return
 
     @property
     def angles(self):
-        return str(self._angles)
+        return self._angles
     @angles.setter
     def angles(self, value):
         if isinstance(value, cfgmath.Vec):
-            self.setKeyvalue("angles", str(value))
+            self.setKeyvalue("angles", value))
             self._angles = value
         return
 
@@ -135,8 +135,8 @@ class Brush(Entity):
 
     def create(self):
         Entity.create(self)
-        self.setKeyvalue("mins", self.__mins.str())
-        self.setKeyvalue("maxs", self.__maxs.str())
+        self.setKeyvalue("mins", self.__mins)
+        self.setKeyvalue("maxs", self.__maxs)
         return
 
 
