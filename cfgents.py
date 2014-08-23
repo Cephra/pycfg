@@ -116,8 +116,13 @@ class Prop(Entity):
 
 
 class Brush(Entity):
+<<<<<<< HEAD
     def __init__(self, cfg, classname, name, maxs, mins=None, kvs=dict()):
         # if we omited mins, make us a cube
+=======
+    def __init__(self, cfg, entname, name, maxs, mins=None, kvs=dict()):
+        # if we omit mins, make us a cube
+>>>>>>> f1be2b2ba79b8e298b255311bf3c0d35b79eda31
         if (mins == None):
             mins=cfgmath.Vec(-maxs.x,
                     -maxs.y,
