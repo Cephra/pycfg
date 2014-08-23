@@ -27,7 +27,7 @@ class Entity(object):
         if (self._cfg):
             cname = self._cfg.name
 
-        line = ("ent_create {0}"+
+        line = ("ent_create {0} "+
         "targetname \"{1}\" "+
         "classname \"{2}\" "+
         "spawnflags {3}").format(self.classname, self.name, cname, self.flags)
