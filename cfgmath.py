@@ -7,16 +7,16 @@ class Vec:
         else:
             self.x, self.y, self.z, = (x, y, z)
 
-    def str(self):
+    def __str__(self):
         return "{0} {1} {2}".format(self.x, self.y, self.z)
 
     def __add__(self, other):
         v = Vec()
-        if type(other) is Vec:
+        if isinstance(other, Vec):
             v.x = self.x + other.x
             v.y = self.y + other.y
             v.z = self.z + other.z
-        elif type(other) is int:
+        elif isinstance(other, int):
             v.x = self.x + other
             v.y = self.y + other
             v.z = self.z + other
@@ -91,7 +91,7 @@ class Vec:
         mag = self.magnitude()
 
         nvec.x = self.x/mag
-        nvec.x = self.y/mag
-        nvec.x = self.z/mag
+        nvec.y = self.y/mag
+        nvec.z = self.z/mag
 
         return nvec

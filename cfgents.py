@@ -1,31 +1,39 @@
 import cfgfile
 import cfgmath
 
-class Entity:
+class Entity(object):
     flags = 0
 
-    def __init__(self, cfg, entname, name, kvs=dict()):
-        self.__cfg = cfg
-        self.entname = entname
+    def __init__(self, cfg, classname, name, kvs=dict()):
+        self.classname = classname
         self.name = name
-        self.__kvs = kvs
+
+        self._cfg = cfg
+        self._kvs = kvs
+
+        self._origin = cfgmath.Vec()
+        self._angles = cfgmath.Vec()
         return
 
     def out(self, line):
-        if (self.__cfg):
-            self.__cfg.appendLine(line)
+        if (self._cfg):
+            self._cfg.appendLine(line)
         else:
             print(line)
         return
 
     def create(self):
         cname = self.name
-        if (self.__cfg):
-            cname = self.__cfg.name
+        if (self._cfg):
+            cname = self._cfg.name
 
-        line = "ent_create {0} targetname \"{1}\" classname \"{2}\" spawnflags {3}".format(self.entname, self.name, cname, self.flags)
-        if (len(self.__kvs) > 0):
-            for key, value in self.__kvs.items():
+        line = ("ent_create {0}"+
+        "targetname \"{1}\" "+
+        "classname \"{2}\" "+
+        "spawnflags {3}").format(self.classname, self.name, cname, self.flags)
+
+        if (len(self._kvs) > 0):
+            for key, value in self._kvs.items():
                 line += " {0} \"{1}\"".format(key, value)
         self.out(line)
         return
@@ -63,6 +71,26 @@ class Entity:
         self.fireInput("setparent", targ)
         return
 
+    @property
+    def origin(self):
+        return str(self._origin)
+    @origin.setter
+    def origin(self, value):
+        if isinstance(value, cfgmath.Vec):
+            self.setKeyvalue("origin", str(value))
+            self._origin = value
+        return
+
+    @property
+    def angles(self):
+        return str(self._angles)
+    @angles.setter
+    def angles(self, value):
+        if isinstance(value, cfgmath.Vec):
+            self.setKeyvalue("angles", str(value))
+            self._angles = value
+        return
+
 
 class Sprite(Entity):
     def __init__(self, cfg, name, texture, kvs=dict()):
@@ -88,7 +116,7 @@ class Prop(Entity):
 
 
 class Brush(Entity):
-    def __init__(self, cfg, entname, name, maxs, mins=None, kvs=dict()):
+    def __init__(self, cfg, classname, name, maxs, mins=None, kvs=dict()):
         # if we omited mins, make us a cube
         if (mins == None):
             mins=cfgmath.Vec(-maxs.x,
@@ -102,7 +130,7 @@ class Brush(Entity):
         self.__mins = mins
         self.__maxs = maxs
 
-        Entity.__init__(self, cfg, entname, name, kvs)
+        Entity.__init__(self, cfg, classname, name, kvs)
         return
 
     def create(self):
