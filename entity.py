@@ -1,5 +1,5 @@
-import cfgfile
-import cfgmath
+import builder
+import vectors
 
 class Entity(object):
     flags = 0
